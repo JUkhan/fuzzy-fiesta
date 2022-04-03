@@ -1,14 +1,24 @@
-import { Box } from "@chakra-ui/react";
-import { useActiveDevices } from "../hooks/useActiveDevices";
+import { Box, Flex, } from "@chakra-ui/react";
 
-
+import { NavBar } from "./navBar";
+import { useWindowResize } from "../hooks/useWindowResize";
+import { Orbit } from './orbit'
 export const Devices = () => {
+  const { height, width } = useWindowResize();
 
-  const devices = useActiveDevices()
+  return (<Box bgColor="tomato" h="100vh">
+
+    <Flex align="center" justify="center" h="100vh">
+
+      <Orbit />
+
+    </Flex>
 
 
-  return (<Box borderWidth='1px' p="40">
-    {devices.map(device => <Box key={device.id}>{device.name}</Box>)}
+    <Box pos="absolute" w={width} top={height - 48}>
+      <NavBar />
+    </Box>
+
   </Box>)
 }
 

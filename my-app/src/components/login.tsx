@@ -1,11 +1,12 @@
-import { Stack, Input, Button, FormControl, FormLabel, FormErrorMessage, } from "@chakra-ui/react";
+import { VStack, Input, Button, FormControl, FormErrorMessage, Flex, Box, InputGroup, InputLeftElement, Center, Container } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../state/store";
 import { useForm } from "@jukhan/react-form";
 import { useEffect } from "react";
 import { loginEffect } from "../state/appSlice";
+import { EmailIcon, WarningIcon } from "@chakra-ui/icons";
 
 export const Login = () => {
-  
+
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.app.loading);
   const {
@@ -30,35 +31,46 @@ export const Login = () => {
   const submit = () => {
     if (validate()) dispatch(loginEffect(formData()));
   };
- 
+
   return (
+    <Flex bg="gray.100" align="center" justify="center" h="100vh">
+      <Box bg="white" p={6} rounded="md" w={64}>
+        <VStack spacing={4} align="flex-start">
+          <Container>
+            <Box fontWeight='bold' fontSize="2xl" as='h1' textAlign="center" >Login</Box>
+          </Container>
 
-    <Stack alignSelf="center" maxW='sm' spacing={3} borderWidth='1px' borderRadius='lg' p="3">
+          <FormControl isRequired isInvalid={getStatus('password') === "warning"}>
+            <InputGroup bgColor="gray.200">
+              <InputLeftElement
+                pointerEvents='none'
+                children={<EmailIcon color='black' />}
+              />
+              <Input type='tel' placeholder='Email Address' value={getValue("email")}
+                onChange={(e) => setValue("email", e.target.value)} />
 
-      <FormControl isRequired isInvalid={getStatus('email') === "warning"} >
-        <FormLabel htmlFor='email'>Email</FormLabel>
-        <Input
-          id="email"
-          value={getValue("email")}
-          onChange={(e) => setValue("email", e.target.value)}
-          placeholder='User name'
-        />
-        <FormErrorMessage>{getMessage('email')}</FormErrorMessage>
-      </FormControl>
+            </InputGroup>
+            <FormErrorMessage>{getMessage('email')}</FormErrorMessage>
+          </FormControl>
+          <FormControl isRequired isInvalid={getStatus('password') === "warning"}>
+            <InputGroup bgColor="gray.200">
+              <InputLeftElement
+                pointerEvents='none'
+                children={<WarningIcon color='black' />}
+              />
+              <Input type='password' placeholder='Password' value={getValue("password")}
+                onChange={(e) => setValue("password", e.target.value)} />
 
-      <FormControl isRequired isInvalid={getStatus('password') === "warning"}>
-        <FormLabel htmlFor='password'>Password</FormLabel>
-        <Input
-          id="password"
-          value={getValue("password")}
-          onChange={(e) => setValue("password", e.target.value)}
-          placeholder='Password'
-        />
-        <FormErrorMessage>{getMessage('password')}</FormErrorMessage>
-      </FormControl>
-
-      <Button isLoading={loading} onClick={submit}>Login</Button>
-    </Stack>
-
+            </InputGroup>
+            <FormErrorMessage>{getMessage('password')}</FormErrorMessage>
+          </FormControl>
+          <Container>
+            <Center>
+              <Button size="sm" colorScheme="blue" isLoading={loading} onClick={submit}>LOG IN</Button>
+            </Center>
+          </Container>
+        </VStack>
+      </Box>
+    </Flex>
   )
 };

@@ -1,4 +1,3 @@
-import { AnyAction } from './../../node_modules/redux/index.d';
 import { api } from './../api/api';
 import axios from 'axios';
 import { createSlice, PayloadAction } from 'orbit-redux';

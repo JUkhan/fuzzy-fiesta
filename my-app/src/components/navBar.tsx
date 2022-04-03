@@ -1,16 +1,16 @@
 import { HStack, Button } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../state/store";
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
+import { useAppDispatch } from "../state/store";
 import { logoutEfect, notifyEffect } from "../state/appSlice";
 
+
 export const NavBar = () => {
-  const isLogedIn = useAppSelector(state => state.app.isLogedIn)
+
   const dispatch = useAppDispatch();
 
-  return (<HStack borderWidth='1px' p="1" justify="end">
-    {isLogedIn && <Button onClick={() => dispatch(notifyEffect())}>Notify </Button>}ß
-    {isLogedIn && <Button onClick={() => dispatch(logoutEfect())}>Logout </Button>}
-    <ColorModeSwitcher />
+  return (<HStack bgColor="red.300" p="2" justify="center">
+    <Button size='sm' bgColor="white" color="black" onClick={() => dispatch(notifyEffect())}>NOTIFY </Button>
+    <Button size='sm' bgColor="black" color="white" onClick={() => dispatch(logoutEfect())}>LOG OUT </Button>
+
   </HStack>);
 }
 
