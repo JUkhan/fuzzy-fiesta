@@ -5,7 +5,11 @@ import '@testing-library/jest-dom/extend-expect'
 import { screen, render, cleanup, fireEvent, waitFor, } from '@testing-library/react';
 import { Login } from './login';
 import { store } from '../state/store';
-import axiosMock from 'axios';
+import axios from 'axios';
+
+// Mock jest and set the types
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 afterEach(cleanup);
 
@@ -35,7 +39,7 @@ it('checks email and pass are required', () => {
 
 it('checks login failed', async () => {
   const { getByText, getByPlaceholderText, store } = renderWithRedux(<Login />);
-  //axiosMock.get.mockRejectedValue({message: 'login failed'});
+  mockedAxios.post.mockRejectedValueOnce({ message: 'Request failed with status code 401' });
   fireEvent.change(getByPlaceholderText('Email Address'), { target: { value: 'jasim' } });
   fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'wrong' } });
   fireEvent.click(getByText('LOG IN'));
@@ -47,7 +51,7 @@ it('checks login failed', async () => {
 
 it('checks login successfull', async () => {
   const { getByText, getByPlaceholderText, store } = renderWithRedux(<Login />);
-
+  mockedAxios.post.mockResolvedValueOnce('token');
   fireEvent.change(getByPlaceholderText('Email Address'), { target: { value: 'jasim@gmail.com' } });
   fireEvent.change(getByPlaceholderText('Password'), { target: { value: 'meld123' } });
   fireEvent.click(getByText('LOG IN'));
