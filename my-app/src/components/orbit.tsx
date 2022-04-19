@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useActiveDevices } from "../hooks/useActiveDevices";
 import { useWindowResize } from "../hooks/useWindowResize";
 import { select, selectAll, Selection } from "d3-selection";
-import { timer } from 'd3-timer'
+import { Timer, timer } from 'd3-timer'
 var t0 = Date.now();
 export const Orbit = () => {
 
@@ -14,7 +14,7 @@ export const Orbit = () => {
   const h = height - 100, w = h * 1.5;
   const r = h / 2 - 50;
   let l = devices.length;
-  const data = devices.map(() => ({ R: r, r: 25, speed: 2, phi0: Math.floor(Math.random() * 360) }));
+  const data = devices.map((_, i) => ({ R: r, r: 25, speed: 2, phi0: i * 10 }));
 
   const textData = [
     { x: w / 2, y: h / 2, text: l.toString() },
@@ -24,6 +24,7 @@ export const Orbit = () => {
 
 
   useEffect(() => {
+    let transitionTimer: Timer | null = null;
     if (!selection) {
       setSelection(select(svgRef.current))
     } else {
@@ -73,6 +74,10 @@ export const Orbit = () => {
         });
       });
 
+    }
+    return () => {
+      transitionTimer?.stop();
+      console.log('transitionTimer stopped');
     }
   }, [selection, width, height, l]);
 

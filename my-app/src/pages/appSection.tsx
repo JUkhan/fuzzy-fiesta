@@ -7,10 +7,11 @@ import { Devices } from "../components/devices"
 import { useAppSelector, useAppDispatch } from "../state/store"
 import { init } from "../state/appSlice"
 import { useEffect } from "react"
+import { MessageBar } from "../components/messageBar"
 
 export const AppSection = () => {
   const dispatch = useAppDispatch()
-  const { isLogedIn, message, error } = useAppSelector(state => state.app)
+  const isLogedIn = useAppSelector(state => state.app.isLogedIn)
 
   useEffect(() => {
     dispatch(init())
@@ -18,8 +19,7 @@ export const AppSection = () => {
 
   return <>
 
-    {message && <Box color="black" bg="gray.100" p="3" borderWidth="1px" borderRadius="lg">{message}</Box>}
-    {error && <Box bg="tomato" p="3" borderWidth="1px" borderRadius="lg">{error}</Box>}
+    <MessageBar />
     <Box>
       {isLogedIn ? <Devices /> : <Login />}
     </Box>
