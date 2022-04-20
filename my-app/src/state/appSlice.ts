@@ -66,6 +66,7 @@ export const appSlice = createSlice({
         dispatch(setDevicesData(res.devices));
       } catch (error: any) {
         dispatch(setError(error.message));
+        dispatch(clearMessage());
       }
     },
     logoutEfect(dispatch) {

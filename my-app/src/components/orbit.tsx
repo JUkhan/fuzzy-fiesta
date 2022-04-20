@@ -14,17 +14,17 @@ export const Orbit = () => {
   const h = height - 100, w = h * 1.5;
   const r = h / 2 - 50;
   let l = devices.length;
-  const data = devices.map((_, i) => ({ R: r, r: 25, speed: 2, phi0: i * 10 }));
+  const data = devices.map((_, i) => ({ R: r, r: 25, speed: 2, phi0: i * 20 }));
 
   const textData = [
     { x: w / 2, y: h / 2, text: l.toString() },
     { x: w / 2 - 30, y: h / 2 + 30, text: l > 1 ? "DEVICES" : "DEVICE" },
     { x: w / 2 - 30, y: h / 2 + 60, text: "ONLINE" }
   ];
-
+  const [ttimer, setTimer] = useState<any>();
 
   useEffect(() => {
-    let transitionTimer: Timer | null = null;
+
     if (!selection) {
       setSelection(select(svgRef.current))
     } else {
@@ -66,19 +66,18 @@ export const Orbit = () => {
         .attr("cy", 0)
         .attr("fill", "white");
 
+      if (!ttimer) {
+        console.log('set-timer');
+        setTimer(timer(function (elapsed) {
 
-      timer(function () {
-        var delta = (Date.now() - t0);
-        container?.selectAll("g.planet").attr("transform", function (d: any) {
-          return "rotate(" + d.phi0 + delta * d.speed / 200 + ")";
-        });
-      });
+          container?.selectAll("g.planet").attr("transform", function (d: any, i: number) {
+            return "rotate(" + ((d.phi0 + elapsed * d.speed / 200) % 360) + ")";
+          });
+        }, 10));
+      }
 
     }
-    return () => {
-      transitionTimer?.stop();
-      console.log('transitionTimer stopped');
-    }
+
   }, [selection, width, height, l]);
 
   return (<div><svg ref={svgRef}></svg></div>)
